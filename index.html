@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ให้คุณแม่คนสวย ❤️</title>
+    <title>ให้มะคนสวย ❤️</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -159,7 +159,6 @@
             border-radius: 24px;
             text-align: center;
             width: 100%;
-            max-height: 94%;
             max-width: 390px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -179,12 +178,12 @@
             padding: 5px 0;
         }
 
-        /* ปรับสัดส่วนกรอบขูดเป็น 4:5 */
+        /* ปรับขนาดกรอบภาพขูดเป็น 3:3 (สี่เหลี่ยมจัตุรัส) */
         .scratch-container {
             width: 100%;
-            aspect-ratio: 4 / 5;
-            max-height: 58vh;
-            max-width: calc(58vh * 0.8);
+            aspect-ratio: 3 / 3;
+            max-width: 330px;
+            max-height: 330px;
             margin: 12px auto;
             position: relative;
             border-radius: 18px;
@@ -259,7 +258,7 @@
             color: #2f3542;
             font-size: 19px;
             font-weight: 700;
-            margin: 8px 0 12px 0;
+            margin: 10px 0 4px 0;
             background: #fff0f3;
             padding: 10px 18px;
             border-radius: 30px;
@@ -271,39 +270,18 @@
         }
 
         @keyframes bounceBounce {
-            0%, 100% { transform: translateY(0) scale(1); }
-            30% { transform: translateY(-8px) scale(1.03); }
-            50% { transform: translateY(0) scale(0.98); }
-            70% { transform: translateY(-4px) scale(1.01); }
-        }
-
-        .next-btn {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
-            width: 100%;
-            transition: background 0.2s;
-        }
-
-        .next-btn:active {
-            background: #ff6b81;
-        }
-
-        /* ----- หน้า 2: โชว์รูปเต็มหน้าจอ (photo5.png) ----- */
-        #final-photo-page {
-            display: none;
-            height: 100%;
-            width: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            30% {
+                transform: translateY(-8px) scale(1.03);
+            }
+            50% {
+                transform: translateY(0) scale(0.98);
+            }
+            70% {
+                transform: translateY(-4px) scale(1.01);
+            }
         }
     </style>
 </head>
@@ -317,7 +295,7 @@
     <div id="game-page">
         <div class="header-title">
             <h1>🔍 หาให้เจอ!</h1>
-            <p>คนไหนคือลูกบ่าวของคุณแม่?</p>
+            <p>คนไหนคือลูกบ่าวของมะ?</p>
         </div>
 
         <div class="card-grid">
@@ -359,20 +337,16 @@
             </div>
 
             <div id="wrongText" style="display:none; color: #ff4757; font-weight:600; margin: 5px 0;">
-                ไม่ใช่ลูกแม่นะคนนี้! ลองขูดใบอื่นดูใหม่ 😜
+                ไม่ใช่ลูกบ่าวของมะนะคนนี้! ลองขูดใบอื่นดูใหม่ 😜
             </div>
 
             <div id="successBox" class="success-box">
                 <div class="success-title">🎉 เย้! ยินดีด้วย เก่งมากกก!</div>
                 <div style="font-size: 13px; color: #2f3542; margin-top: 2px;">ลูกบ่าวตัวจริงเสียงจริง!</div>
-                <div class="money-text">ลูกขอตังหน่อย💸</div>
-                <button class="next-btn" onclick="showFinalPhoto()">เปิดดูรูปเซอร์ไพรส์ ❤️</button>
+                <div class="money-text">ลูกบ่าวขอตังหน่อย💸</div>
             </div>
         </div>
     </div>
-
-    <!-- หน้า 2: โชว์ photo5.png เต็มหน้าจอโดยไม่มีหน้าข้อความ -->
-    <div id="final-photo-page"></div>
 </div>
 
 <script>
@@ -401,6 +375,7 @@
         }
     }
 
+    // ฟังเหตุการณ์การกดสัมผัสเพื่อเริ่มเล่นเพลงทันทีที่เปิด/แตะเว็บ
     window.addEventListener('click', startMusic, { once: true });
     window.addEventListener('touchstart', startMusic, { once: true });
 
@@ -411,7 +386,7 @@
     }
 
     function openScratchModal(cardIndex, imageSrc, isCorrect) {
-        startMusic();
+        startMusic(); // เริ่มเล่นเพลงถ้ายังไม่ได้เริ่ม
         currentCardIndex = cardIndex;
         currentImageSrc = imageSrc;
         isCorrectCard = isCorrect;
@@ -436,6 +411,13 @@
         ctx.globalCompositeOperation = 'source-over';
         ctx.fillStyle = '#dcdde1';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let fontSize = Math.max(18, Math.floor(canvas.width * 0.065));
+        ctx.fillStyle = '#2f3542';
+        ctx.font = `600 ${fontSize}px Prompt, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('', canvas.width / 2, canvas.height / 2);
     }
 
     function getBrushPos(xRef, yRef) {
@@ -499,7 +481,7 @@
                 thumbElement.innerHTML = `<img src="${currentImageSrc}" alt="รูปที่ขูดแล้ว">`;
                 
                 if (!isCorrectCard) {
-                    tagElement.innerText = "การ์ดใบนี้ไม่ใช่ลูกแม่";
+                    tagElement.innerText = "การ์ดใบนี้ไม่ใช่ลูกบ่าวของมะ";
                     tagElement.classList.add("wrong");
                 }
             }
@@ -516,15 +498,6 @@
     function closeModal() {
         document.getElementById('scratchModal').style.display = 'none';
         targetImage.style.opacity = '0';
-    }
-
-    function showFinalPhoto() {
-        closeModal();
-        document.getElementById('game-page').style.display = 'none';
-        
-        let finalPage = document.getElementById('final-photo-page');
-        finalPage.style.backgroundImage = "url('photo5.png')";
-        finalPage.style.display = 'block';
     }
 </script>
 
